@@ -1,11 +1,11 @@
 /**
  * account1:
- * publicKey: GCDXMZLEOR6N5YOQIM2DKXZUUIFJNH6N65LVBHX2HJFAQUG52FBB2I2Y
- * secret: SDSE4SNZBPNZY2UZKDOR4QZVB4RDH7EUETMC3YVZQPTUC3B7MMUR7HLM
+ * publicKey: GALG2TDUQXQCHBP3BUZECXR27OEOSLJGQRXJQTK2JOLHMUDRAA2C36AQ
+ * secret: SBZB5RUKH6ZAYBQQO6SCGHMAE5XUUKR47ZFIAR2NEM7RH33QUOKZS374
  *
- * account1:
- * publicKey: GA4C4R75HIQGGR6HQIII4PVDX2IME5CI5C2JVC24VGCCAJBRJRZAQ4CE
- * secret: SDSVJJI4UXAH3VIRUCUNLSCH73HHXPWU2VPUQ5O2KZJDUAF5O475ZP3I
+ * account2:
+ * publicKey: GAX6WV4PRAHAG7SEUQUTV2H5ARAVBHWLYMHVFWAIAAQOM3IPIQA64E6T
+ * secret: SBJS443TXKNK2AW6O2C76AF5Y5JTVMO2XYXCECMVXG7AZYWKUBEA7YNR
  *
  */
 
@@ -16,33 +16,20 @@ const Stellar = {
     this.createSecret();
   },
   createSecret() {
-    if (localStorage.getItem('secret')) {
-      return {
-        secret: localStorage.getItem('secret'),
-        publicKey: localStorage.getItem('publicKey'),
-      };
-    }
     const pair = this.StellarSdk.Keypair.random();
-    const secret = pair.secret();
-    const publicKey = pair.publicKey();
-    localStorage.setItem('secret', secret);
-    localStorage.setItem('publicKey', publicKey);
     return {
       secret: pair.secret(),
       publicKey: pair.publicKey(),
     };
   },
   createAccount(callback) {
-    if (localStorage.getItem('account')) {
-      return callback(JSON.parse(localStorage.getItem('account')));
-    }
+    const keySecret = this.createSecret();
+    console.log(keySecret);
     $.get('https://friendbot.stellar.org', {
-      addr: localStorage.getItem('publicKey'),
+      addr: keySecret.publicKey,
     }, (data) => {
       callback(data);
-      localStorage.setItem('account', JSON.stringify(data));
     });
-    return false;
   },
   loadAccount(publicKey, callback) {
     const server = new this.StellarSdk.Server('https://horizon-testnet.stellar.org');

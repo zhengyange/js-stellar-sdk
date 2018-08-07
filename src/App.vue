@@ -6,15 +6,15 @@
 </template>
 
 <script>
-import Stellar from './stellar';
+// import Stellar from './stellar';
 
 export default {
   name: 'App',
   created() {
-    Stellar.init();
-    Stellar.createAccount((data) => {
-      console.log(data);
-    });
+    // Stellar.init();
+    // Stellar.createAccount((data) => {
+    //   console.log(data);
+    // });
   },
 };
 </script>
