@@ -5,6 +5,7 @@
       <div type="primary" @click="handleLoadAccount1">加载帐户1</div>
       <div type="primary" @click="handleLoadAccount2">加载帐户2</div>
       <div type="primary" @click="handleTransaction">转帐1To2</div>
+      <div type="primary" @click="handleBridge">bridge测试</div>
     </div>
     <table>
       <th><td>帐户1</td><td></td></th>
@@ -157,6 +158,22 @@ export default {
         onerror() {
           console.error('Error in payment stream');
         },
+      });
+    },
+    handleBridge() {
+      const $ = window.$;
+      $.post('http://10.2.45.185:8006/payment', {
+        amount: '1',
+        asset_code: 'USD',
+        asset_issuer: 'GAX6WV4PRAHAG7SEUQUTV2H5ARAVBHWLYMHVFWAIAAQOM3IPIQA64E6T',
+        destination: 'GALG2TDUQXQCHBP3BUZECXR27OEOSLJGQRXJQTK2JOLHMUDRAA2C36AQ',
+        source: 'SBZB5RUKH6ZAYBQQO6SCGHMAE5XUUKR47ZFIAR2NEM7RH33QUOKZS374',
+      }, (error, response, body) => {
+        if (error || response.statusCode !== 200) {
+          console.error('ERROR!', error || body);
+        } else {
+          console.log('SUCCESS!', body);
+        }
       });
     },
   },
